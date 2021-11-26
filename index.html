@@ -1,225 +1,305 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Snake</title>
 
-<head>
-  <title>Snake</title>
-
-  <style>
-    html,
-    body {
-      height: 100%;
-      margin: 0;
-    }
-    body {
-      background: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    canvas {
-      border: 1px solid black;
-    }
-
-    #life-counter {
-      width: 140px;
-      height: 45px;
-      font-family: 'Roboto', sans-serif;
-      font-size: 24px;
-      text-transform: uppercase;
-      color: #000;
-      text-align: center;
-      word-wrap: normal;
-      white-space: nowrap;
-    }
-
-    .button {
-      width: 140px;
-      height: 45px;
-      font-family: 'Roboto', sans-serif;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 2.5px;
-      font-weight: 500;
-      color: #000;
-      background-color: #fff;
-      border: none;
-      border-radius: 45px;
-      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease 0s;
-      cursor: pointer;
-      outline: none;
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
-    .button:hover {
-      background-color: #2EE59D;
-      box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
-      color: #fff;
-      transform: translateY(-7px);
-    }
+      canvas {
+        border: 1px solid black;
+      }
 
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
+      #life-counter {
+        width: 140px;
+        height: 45px;
+        font-family: 'Roboto', sans-serif;
+        font-size: 24px;
+        text-transform: uppercase;
+        color: #000;
+        text-align: center;
+        word-wrap: normal;
+        white-space: nowrap;
+      }
 
-      grid-gap: 20px;
-      align-content: space-between;
-    }
+      .button {
+        width: 140px;
+        height: 45px;
+        font-family: 'Roboto', sans-serif;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 2.5px;
+        font-weight: 500;
+        color: #000;
+        background-color: #fff;
+        border: none;
+        border-radius: 45px;
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease 0s;
+        cursor: pointer;
+        outline: none;
+      }
 
-  </style>
-</head>
+      .button:hover {
+        background-color: #2ee59d;
+        box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+        color: #fff;
+        transform: translateY(-7px);
+      }
 
-<body>
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+
+        grid-gap: 20px;
+        align-content: space-between;
+      }
+
+      #controls {
+        margin-left: 10px;
+        text-align: center;
+      }
+
+      #controls button {
+        padding: 10px 10px;
+        width: 38px;
+        height: 38px;
+        margin-top: 10px;
+      }
+      #controls button {
+        padding: 10px 10px;
+        width: 38px;
+        height: 38px;
+        margin-top: 10px;
+        background-color: #ddd;
+        border: 1px solid #000;
+        border-radius: 3px;
+      }
+
+      #controls button {
+        padding: 10px 10px;
+        width: 38px;
+        height: 38px;
+        margin-top: 10px;
+        background-color: #ddd;
+        border: 1px solid #000;
+        border-radius: 3px;
+        cursor: pointer;
+        position: relative;
+      }
+
+      #controls #horiz {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      button#right {
+        margin-left: 5px;
+      }
+      button#left {
+        margin-right: 5px;
+      }
+
+      #controls button::before {
+        content: '';
+        width: 0px;
+        position: absolute;
+      }
+      button#left::before {
+        border-top: 10px solid transparent;
+        border-right: 15px solid #000;
+        border-bottom: 10px solid transparent;
+        left: 10px;
+        top: 9px;
+      }
+      button#right::before {
+        border-top: 10px solid transparent;
+        border-left: 15px solid #000;
+        border-bottom: 10px solid transparent;
+        left: 12px;
+        top: 9px;
+      }
+      button#up::before {
+        border-right: 10px solid transparent;
+        border-left: 10px solid transparent;
+        border-bottom: 15px solid #000;
+        left: 9px;
+        top: 9px;
+      }
+      button#down::before {
+        border-right: 10px solid transparent;
+        border-left: 10px solid transparent;
+        border-top: 15px solid #000;
+        left: 9px;
+        top: 12px;
+      }
+    </style>
+  </head>
+
+  <body>
     <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
-  <div class="container">
-    <div id="life-counter"></div>
-    <canvas width="400" height="400" id="game"></canvas>
-    <button class="button" id="get-life">Get life</button>
-  </div>
-  <script>
-    var canvas = document.getElementById('game');
-    var lifeCounterDiv = document.getElementById('life-counter');
-    var getLifeButton = document.getElementById('get-life');
+    <div class="container">
+      <div id="life-counter"></div>
+      <canvas width="400" height="400" id="game"></canvas>
+      <button class="button" id="get-life">Получить жизнь</button>
+      <div id="controls">
+        <button id="up"></button>
 
-    var context = canvas.getContext('2d');
-    var grid = 16;
-    var count = 0;
-    var snake = {
-      x: 160,
-      y: 160,
+        <div id="horiz">
+          <button id="left"></button>
+          <button id="right"></button>
+        </div>
+        <button id="down"></button>
+      </div>
+    </div>
+    <script>
+      var canvas = document.getElementById('game');
+      var lifeCounterDiv = document.getElementById('life-counter');
+      var getLifeButton = document.getElementById('get-life');
 
-      dx: grid,
-      dy: 0,
+      var context = canvas.getContext('2d');
+      var grid = 16;
+      var count = 0;
+      var snake = {
+        x: 160,
+        y: 160,
 
-      cells: [],
+        dx: grid,
+        dy: 0,
 
-      maxCells: 4
-    };
+        cells: [],
 
-    var apple = {
-      x: 320,
-      y: 320
-    };
+        maxCells: 4,
+      };
 
-    var lifeCounter = 5;
+      var apple = {
+        x: 320,
+        y: 320,
+      };
 
-    lifeCounterDiv.innerHTML = "Life count: " + lifeCounter;
+      var lifeCounter = 5;
 
-    function updateLifeCounterDiv(lifeCount) {
-      if (lifeCount >= 0) {
-        lifeCounterDiv.innerHTML = "Life count: " + lifeCount;
-      }
-    }
+      lifeCounterDiv.innerHTML = 'Life count: ' + lifeCounter;
 
-    function getRandomInt(min, max) {
-      return Math.floor(Math.random() * (max - min)) + min;
-    }
-
-    function loop() {
-
-      requestAnimationFrame(loop);
-
-      if (++count < 4) {
-        return;
+      function updateLifeCounterDiv() {
+        if (lifeCounter >= 0) {
+          lifeCounterDiv.innerHTML = 'Life count: ' + lifeCounter;
+        }
       }
 
-      count = 0;
-
-      context.clearRect(0, 0, canvas.width, canvas.height);
-
-      snake.x += snake.dx;
-      snake.y += snake.dy;
-
-      if (snake.x < 0) {
-        snake.x = canvas.width - grid;
-      }
-      else if (snake.x >= canvas.width) {
-        updateLifeCounterDiv(--lifeCounter);
-        snake.x = 0;
+      function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
       }
 
-      if (snake.y < 0) {
-        snake.y = canvas.height - grid;
-      }
-      else if (snake.y >= canvas.height) {
-        updateLifeCounterDiv(--lifeCounter);
-        snake.y = 0;
-      }
+      function loop() {
+        requestAnimationFrame(loop);
 
-      snake.cells.unshift({ x: snake.x, y: snake.y });
-
-      if (snake.cells.length > snake.maxCells) {
-        snake.cells.pop();
-      }
-
-      context.fillStyle = 'red';
-      context.fillRect(apple.x, apple.y, grid - 1, grid - 1);
-
-      context.fillStyle = 'green';
-
-      snake.cells.forEach(function (cell, index) {
-
-        context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
-
-        if (cell.x === apple.x && cell.y === apple.y) {
-
-          snake.maxCells++;
-
-          apple.x = getRandomInt(0, 25) * grid;
-          apple.y = getRandomInt(0, 25) * grid;
+        if (++count < 20) {
+          return;
         }
 
-        for (var i = index + 1; i < snake.cells.length; i++) {
+        count = 0;
 
-          if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
 
-            snake.x = 160;
-            snake.y = 160;
-            snake.cells = [];
-            snake.maxCells = 4;
-            snake.dx = grid;
-            snake.dy = 0;
+        snake.x += snake.dx;
+        snake.y += snake.dy;
+
+        if (snake.x < 0) {
+          lifeCounter--;
+          snake.x = canvas.width - grid;
+        } else if (snake.x >= canvas.width) {
+          lifeCounter--;
+          snake.x = 0;
+        }
+
+        if (snake.y < 0) {
+          lifeCounter--;
+          snake.y = canvas.height - grid;
+        } else if (snake.y >= canvas.height) {
+          lifeCounter--;
+          snake.y = 0;
+        }
+
+        updateLifeCounterDiv();
+
+        snake.cells.unshift({ x: snake.x, y: snake.y });
+
+        if (snake.cells.length > snake.maxCells) {
+          snake.cells.pop();
+        }
+
+        context.fillStyle = 'red';
+        context.fillRect(apple.x, apple.y, grid - 1, grid - 1);
+
+        context.fillStyle = 'green';
+
+        snake.cells.forEach(function (cell, index) {
+          context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
+
+          if (cell.x === apple.x && cell.y === apple.y) {
+            snake.maxCells++;
 
             apple.x = getRandomInt(0, 25) * grid;
             apple.y = getRandomInt(0, 25) * grid;
           }
+
+          for (var i = index + 1; i < snake.cells.length; i++) {
+            if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
+              snake.x = 160;
+              snake.y = 160;
+              snake.cells = [];
+              snake.maxCells = 4;
+              snake.dx = grid;
+              snake.dy = 0;
+
+              apple.x = getRandomInt(0, 25) * grid;
+              apple.y = getRandomInt(0, 25) * grid;
+            }
+          }
+        });
+      }
+
+      document.addEventListener('keydown', function (e) {
+        if (e.which === 37 && snake.dx === 0) {
+          snake.dx = -grid;
+          snake.dy = 0;
+        } else if (e.which === 38 && snake.dy === 0) {
+          snake.dy = -grid;
+          snake.dx = 0;
+        } else if (e.which === 39 && snake.dx === 0) {
+          snake.dx = grid;
+          snake.dy = 0;
+        } else if (e.which === 40 && snake.dy === 0) {
+          snake.dy = grid;
+          snake.dx = 0;
         }
       });
-    }
 
-    document.addEventListener('keydown', function (e) {
-      if (e.which === 37 && snake.dx === 0) {
-        snake.dx = -grid;
-        snake.dy = 0;
-      }
+      getLifeButton.addEventListener('click', (event) => {
+        vkBridge.send('VKWebAppInit');
+        vkBridge
+          .send('VKWebAppShowNativeAds', { ad_format: 'preloader' })
+          .then((data) => {})
+          .catch((error) => console.log(error));
 
-      else if (e.which === 38 && snake.dy === 0) {
-        snake.dy = -grid;
-        snake.dx = 0;
-      }
+        lifeCounter++;
+        updateLifeCounterDiv();
+      });
 
-      else if (e.which === 39 && snake.dx === 0) {
-        snake.dx = grid;
-        snake.dy = 0;
-      }
-
-      else if (e.which === 40 && snake.dy === 0) {
-        snake.dy = grid;
-        snake.dx = 0;
-      }
-    });
-
-    getLifeButton.addEventListener('click', event => {
-      vkBridge.send("VKWebAppInit"); 
-      vkBridge.send("VKWebAppShowNativeAds", {ad_format:"preloader"})
-      .then(updateLifeCounterDiv(++lifeCounter))
-      .catch(error => console.log(error));
-    });
-
-    requestAnimationFrame(loop);
-  </script>
-</body>
-
+      requestAnimationFrame(loop);
+    </script>
+  </body>
 </html>
