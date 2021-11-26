@@ -309,7 +309,7 @@
         context.fillStyle = 'black';
         context.textBaseline = 'middle';
         context.textAlign = 'center';
-        context.font = 'normal bold 12px serif';
+        context.font = 'normal bold 14px serif';
 
         context.fillText('Игра окончена.', canvas.width / 2, canvas.height / 2);
         context.fillText('Для продолжения нажмите "Получить жизнь"', canvas.width / 2, canvas.height / 2 + 30);
@@ -317,7 +317,7 @@
 
       function updateLifeCounterDiv() {
         if (lifeCounter >= 0) {
-          lifeCounterDiv.innerHTML = 'Life count: ' + lifeCounter;
+          lifeCounterDiv.innerHTML = 'Кол-во жизней: ' + lifeCounter;
         }
       }
 
