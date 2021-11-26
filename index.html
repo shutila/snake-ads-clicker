@@ -106,10 +106,10 @@
         justify-content: center;
       }
       button#right {
-        margin-left: 5px;
+        margin-left: 25px;
       }
       button#left {
-        margin-right: 5px;
+        margin-right: 25px;
       }
 
       #controls button::before {
@@ -168,6 +168,12 @@
       var canvas = document.getElementById('game');
       var lifeCounterDiv = document.getElementById('life-counter');
       var getLifeButton = document.getElementById('get-life');
+      let up = document.getElementById('up');
+      let left = document.getElementById('left');
+      let down = document.getElementById('down');
+      let right = document.getElementById('right');
+
+      let isGameOver = false;
 
       var context = canvas.getContext('2d');
       var grid = 16;
@@ -193,18 +199,15 @@
 
       lifeCounterDiv.innerHTML = 'Life count: ' + lifeCounter;
 
-      function updateLifeCounterDiv() {
-        if (lifeCounter >= 0) {
-          lifeCounterDiv.innerHTML = 'Life count: ' + lifeCounter;
-        }
-      }
-
-      function getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min)) + min;
-      }
-
       function loop() {
-        requestAnimationFrame(loop);
+        isGameOver = false;
+        updateLifeCounterDiv();
+
+        if (lifeCounter > 0) {
+          requestAnimationFrame(loop);
+        } else {
+          gameOver();
+        }
 
         if (++count < 20) {
           return;
@@ -233,7 +236,7 @@
           snake.y = 0;
         }
 
-        updateLifeCounterDiv();
+        
 
         snake.cells.unshift({ x: snake.x, y: snake.y });
 
@@ -258,34 +261,31 @@
 
           for (var i = index + 1; i < snake.cells.length; i++) {
             if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
-              snake.x = 160;
-              snake.y = 160;
-              snake.cells = [];
-              snake.maxCells = 4;
-              snake.dx = grid;
-              snake.dy = 0;
-
-              apple.x = getRandomInt(0, 25) * grid;
-              apple.y = getRandomInt(0, 25) * grid;
+              lifeCounter = 0;
+              restartGame();
             }
           }
         });
       }
 
-      document.addEventListener('keydown', function (e) {
-        if (e.which === 37 && snake.dx === 0) {
-          snake.dx = -grid;
-          snake.dy = 0;
-        } else if (e.which === 38 && snake.dy === 0) {
-          snake.dy = -grid;
-          snake.dx = 0;
-        } else if (e.which === 39 && snake.dx === 0) {
-          snake.dx = grid;
-          snake.dy = 0;
-        } else if (e.which === 40 && snake.dy === 0) {
-          snake.dy = grid;
-          snake.dx = 0;
-        }
+      up.addEventListener('mousedown', function () {
+        snake.dy = -grid;
+        snake.dx = 0;
+      });
+
+      down.addEventListener('mousedown', function () {
+        snake.dy = grid;
+        snake.dx = 0;
+      });
+
+      left.addEventListener('mousedown', function () {
+        snake.dx = -grid;
+        snake.dy = 0;
+      });
+
+      right.addEventListener('mousedown', function () {
+        snake.dx = grid;
+        snake.dy = 0;
       });
 
       getLifeButton.addEventListener('click', (event) => {
@@ -297,7 +297,46 @@
 
         lifeCounter++;
         updateLifeCounterDiv();
+        if (isGameOver) {
+          initGame();
+
+          requestAnimationFrame(loop);
+        }
       });
+
+      function gameOver() {
+        isGameOver = true;
+        context.fillStyle = 'black';
+        context.textBaseline = 'middle';
+        context.textAlign = 'center';
+        context.font = 'normal bold 18px serif';
+
+        context.fillText('Игра окончена.', canvas.width / 2, canvas.height / 2);
+        context.fillText('Для продолжения нажмите "Получить жизнь"', canvas.width / 2, canvas.height / 2 + 30);
+      }
+
+      function updateLifeCounterDiv() {
+        if (lifeCounter >= 0) {
+          lifeCounterDiv.innerHTML = 'Life count: ' + lifeCounter;
+        }
+      }
+
+      function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+      }
+
+      function initGame() {
+        snake.x = 160;
+        snake.y = 160;
+        snake.cells = [];
+        snake.maxCells = 4;
+        snake.dx = grid;
+        snake.dy = 0;
+
+        apple.x = getRandomInt(0, 25) * grid;
+        apple.y = getRandomInt(0, 25) * grid;
+
+      }
 
       requestAnimationFrame(loop);
     </script>
