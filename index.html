@@ -197,7 +197,7 @@
 
       var lifeCounter = 5;
 
-      lifeCounterDiv.innerHTML = 'Life count: ' + lifeCounter;
+      lifeCounterDiv.innerHTML = 'Кол-во жизней: ' + lifeCounter;
 
       function loop() {
         isGameOver = false;
@@ -309,7 +309,7 @@
         context.fillStyle = 'black';
         context.textBaseline = 'middle';
         context.textAlign = 'center';
-        context.font = 'normal bold 18px serif';
+        context.font = 'normal bold 12px serif';
 
         context.fillText('Игра окончена.', canvas.width / 2, canvas.height / 2);
         context.fillText('Для продолжения нажмите "Получить жизнь"', canvas.width / 2, canvas.height / 2 + 30);
