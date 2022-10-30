@@ -293,10 +293,11 @@
       });
 
       getLifeButton.addEventListener('click', (event) => {
-        vkbridge.send("VKWebAppCheckNativeAds", {"ad_format": "reward"});
-    vkbridge.send("VKWebAppShowNativeAds", {ad_format:"reward"})
-    .then(data => console.log(data.result))
-    .catch(error => console.log(error));
+       vkBridge.send('VKWebAppInit');
+        vkBridge
+          .send('VKWebAppShowNativeAds', { ad_format: 'preloader' })
+          .then((data) => {})
+          .catch((error) => console.log(error));
 
         lifeCounter++;
         updateLifeCounterDiv();
