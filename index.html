@@ -209,9 +209,10 @@ for(var i = 0; i < keys.length; i++) {
             var equation = inputVal;
             var lastChar = equation[equation.length - 1];
             <script>
-                vkBridge.send("VKWebAppInit", {});
+            vkBridge.send("VKWebAppInit", {});
             </script>
-    bridge.send('VKWebAppShowNativeAds', { ad_format: 'reward' })
+    // Показать рекламу
+  bridge.send('VKWebAppShowNativeAds', { ad_format: 'reward' })
     .then((data) => {
       if (data.result) // Успех
         console.log('Реклама показана');
