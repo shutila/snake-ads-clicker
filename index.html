@@ -211,16 +211,15 @@ for(var i = 0; i < keys.length; i++) {
             <script>
             vkBridge.send("VKWebAppInit", {});
             </script>
-    // Показать рекламу
-  bridge.send('VKWebAppShowNativeAds', { ad_format: 'reward' })
+    bridge.send('VKWebAppShowNativeAds', { ad_format: 'reward' })
     .then((data) => {
-      if (data.result) // Успех
-        console.log('Реклама показана');
-      else // Ошибка 
-        console.log('Ошибка при показе');
+    if (data.result) // Успех
+    console.log('Реклама показана');
+    else // Ошибка 
+    console.log('Ошибка при показе');
     })
     .catch((error) => { console.log(error); /* Ошибка */ });
-}
+    }
             // Replace all instances of x and ÷ with * and / respectively. This can be done easily using regex and the 'g' tag which will replace all instances of the matched character/substring
             equation = equation.replace(/x/g, '*').replace(/÷/g, '/');
             
