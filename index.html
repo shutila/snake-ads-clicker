@@ -208,10 +208,35 @@ for(var i = 0; i < keys.length; i++) {
         else if(btnVal == '=') {
             var equation = inputVal;
             var lastChar = equation[equation.length - 1];
-            vkBridge.send("VKWebAppInit"); //реклама
-    vkBridge.send("VKWebAppShowNativeAds", {ad_format:"preloader"})
-.then(data => console.log(data.result))
-.catch(error => console.log(error));
+// Проверка готовности рекламы
+bridge.send('VKWebAppCheckNativeAds', { ad_format: 'reward' })
+  .then((data) => {
+    if (data.result) {
+      // Предзагруженная реклама есть.
+
+      // Теперь можно создать кнопку
+      // "Посмотрите рекламу".   
+      // ...
+            
+    } else {
+      console.log('Рекламные материалы не найдены.');
+    }
+  })
+  .catch((error) => { console.log(error); /* Ошибка */  });
+
+// Обработчик нажатия кнопки "Посмотрите рекламу"
+function fooButtonClick()
+{
+  // Показать рекламу
+  bridge.send('VKWebAppShowNativeAds', { ad_format: 'reward' })
+    .then((data) => {
+      if (data.result) // Успех
+        console.log('Реклама показана');
+      else // Ошибка 
+        console.log('Ошибка при показе');
+    })
+    .catch((error) => { console.log(error); /* Ошибка */ });
+}
             // Replace all instances of x and ÷ with * and / respectively. This can be done easily using regex and the 'g' tag which will replace all instances of the matched character/substring
             equation = equation.replace(/x/g, '*').replace(/÷/g, '/');
             
