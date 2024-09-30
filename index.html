@@ -106,11 +106,18 @@
 <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
 <script>
     // Инициализация VK Bridge
-    bridge.send('VKWebAppInit').then(() => {
-        console.log('VK Bridge успешно инициализирован');
-    }).catch((error) => {
-        console.log('Ошибка инициализации VK Bridge:', error);
-    });
+    bridge.send('VKWebAppInit')
+  .then((data) => { 
+    if (data.result) {
+      // Приложение инициализировано
+    } else {
+      // Ошибка
+    }
+  })
+  .catch((error) => {
+    // Ошибка
+    console.log(error);
+  });
 
     // Переменные для работы с калькулятором
     var keys = document.querySelectorAll('#calculator span');
