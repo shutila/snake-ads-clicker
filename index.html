@@ -1,200 +1,115 @@
 <!DOCTYPE html>
-<html lang="ru">
-<head>
+<html lang="en-us">
+  <head>
     <meta charset="utf-8">
-    <title>Калькулятор с рекламой</title>
-    <style>
-        /* Стили калькулятора остаются без изменений */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font: bold 14px Arial, sans-serif;
-        }
-
-        html {
-            height: 100%;
-            background: white;
-            background: radial-gradient(circle, #fff 20%, #ccc);
-            background-size: cover;
-        }
-
-        #calculator {
-            width: 325px;
-            margin: 100px auto;
-            padding: 20px 20px 9px;
-            background: #9dd2ea;
-            background: linear-gradient(#9dd2ea, #8bceec);
-            border-radius: 3px;
-            box-shadow: 0px 4px #009de4, 0px 10px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .top .screen {
-            height: 40px;
-            width: 212px;
-            float: right;
-            padding: 0 10px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 3px;
-            box-shadow: inset 0px 4px rgba(0, 0, 0, 0.2);
-            font-size: 17px;
-            line-height: 40px;
-            color: white;
-            text-align: right;
-            letter-spacing: 1px;
-        }
-
-        .keys span, .top span.clear {
-            float: left;
-            width: 66px;
-            height: 36px;
-            background: white;
-            border-radius: 3px;
-            box-shadow: 0px 4px rgba(0, 0, 0, 0.2);
-            margin: 0 7px 11px 0;
-            color: #888;
-            line-height: 36px;
-            text-align: center;
-            user-select: none;
-            transition: all 0.2s ease;
-        }
-
-        .keys span.operator {
-            background: #FFF0F5;
-        }
-
-        .keys span.eval {
-            background: #f1ff92;
-            color: #888e5f;
-        }
-
-        .keys span:hover {
-            background: #9c89f6;
-            color: white;
-        }
-    </style>
-</head>
-<body>
-
-<div id="calculator">
-    <div class="top">
-        <span class="clear">C</span>
-        <div class="screen"></div>
-    </div>
-
-    <div class="keys">
-        <span>7</span>
-        <span>8</span>
-        <span>9</span>
-        <span class="operator">+</span>
-        <span>4</span>
-        <span>5</span>
-        <span>6</span>
-        <span class="operator">-</span>
-        <span>1</span>
-        <span>2</span>
-        <span>3</span>
-        <span class="operator">÷</span>
-        <span>0</span>
-        <span>.</span>
-        <span class="eval">=</span>
-        <span class="operator">x</span>
-    </div>
-</div>
-
-<!-- VK Bridge -->
-<script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
-<script>
-    // Инициализация VK Bridge
-    bridge.send('VKWebAppInit')
-  .then((data) => { 
-    if (data.result) {
-      // Приложение инициализировано
-    } else {
-      // Ошибка
-    }
-  })
-  .catch((error) => {
-    // Ошибка
-    console.log(error);
-  });
-
-    // Переменные для работы с калькулятором
-    var keys = document.querySelectorAll('#calculator span');
-    var operators = ['+', '-', 'x', '÷'];
-    var decimalAdded = false;
-
-    // Добавляем обработчик на все клавиши
-    for (var i = 0; i < keys.length; i++) {
-        keys[i].onclick = function (e) {
-            var input = document.querySelector('.screen');
-            var inputVal = input.innerHTML;
-            var btnVal = this.innerHTML;
-
-            if (btnVal == 'C') {
-                input.innerHTML = '';
-                decimalAdded = false;
-            } else if (btnVal == '=') {
-                var equation = inputVal;
-                var lastChar = equation[equation.length - 1];
-
-                // Проверка рекламы
-                showAd();
-
-                // Замена символов операций
-                equation = equation.replace(/x/g, '*').replace(/÷/g, '/');
-
-                if (operators.indexOf(lastChar) > -1 || lastChar == '.') {
-                    equation = equation.replace(/.$/, '');
-                }
-
-                if (equation) {
-                    input.innerHTML = eval(equation);
-                }
-
-                decimalAdded = false;
-            } else if (operators.indexOf(btnVal) > -1) {
-                var lastChar = inputVal[inputVal.length - 1];
-
-                if (inputVal != '' && operators.indexOf(lastChar) == -1) {
-                    input.innerHTML += btnVal;
-                } else if (inputVal == '' && btnVal == '-') {
-                    input.innerHTML += btnVal;
-                }
-
-                if (operators.indexOf(lastChar) > -1 && inputVal.length > 1) {
-                    input.innerHTML = inputVal.replace(/.$/, btnVal);
-                }
-
-                decimalAdded = false;
-            } else if (btnVal == '.') {
-                if (!decimalAdded) {
-                    input.innerHTML += btnVal;
-                    decimalAdded = true;
-                }
-            } else {
-                input.innerHTML += btnVal;
-            }
-
-            e.preventDefault();
-        }
-    }
-
-    // Функция показа рекламы
-    function showAd() {
-        bridge.send('VKWebAppShowNativeAds', { ad_format: 'reward' })
-        .then((data) => {
-            if (data.result) {
-                console.log('Реклама показана');
-            } else {
-                console.log('Ошибка при показе рекламы');
-            }
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Run&Hide</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+  </head>
+  <body>
+	<script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+	<script>
+        vkBridge.send("VKWebAppInit", {});
+        vkBridge.send('VKWebAppShowNativeAds', { ad_format: 'interstitial' })
+            .then((data) => {
+                if (data.result)
+                    console.log('Реклама показана');
+                else
+                    console.log('Ошибка при показе');
         })
-        .catch((error) => {
-            console.log('Ошибка показа рекламы:', error);
-        });
-    }
-</script>
+            .catch((error) => { console.log(error); /* Ошибка */ });
+    </script>
+  
+    <div id="unity-container" style="position: absolute; width: 100%; height: 100%; left: 0%; top: 0%;">
+	  <canvas id="unity-canvas" style="position: absolute; width: 100%; height: 100%"></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+      </div>
+      <div id="unity-warning"> </div>
+    </div>
+    <script>
+      var container = document.querySelector("#unity-container");
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
+      //var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+      var warningBanner = document.querySelector("#unity-warning");
 
-</body>
+      // Shows a temporary message banner/ribbon for a few seconds, or
+      // a permanent error message on top of the canvas if type=='error'.
+      // If type=='warning', a yellow highlight color is used.
+      // Modify or remove this function to customize the visually presented
+      // way that non-critical warnings and error messages are presented to the
+      // user.
+      function unityShowBanner(msg, type) {
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        }
+        var div = document.createElement('div');
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == 'error') div.style = 'background: red; padding: 10px;';
+        else {
+          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+          setTimeout(function() {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          }, 5000);
+        }
+        updateBannerVisibility();
+      }
+
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/Build.loader.js";
+      var config = {
+        dataUrl: buildUrl + "/Build.data.unityweb",
+        frameworkUrl: buildUrl + "/Build.framework.js.unityweb",
+        codeUrl: buildUrl + "/Build.wasm.unityweb",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DorferOUGames",
+        productName: "Run&Hide",
+        productVersion: "0.0.1",
+        showBanner: unityShowBanner,
+      };
+
+      // By default Unity keeps WebGL canvas render target size matched with
+      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+      // Set this to false if you want to decouple this synchronization from
+      // happening inside the engine, and you would instead like to size up
+      // the canvas DOM size and WebGL render target sizes yourself.
+      // config.matchWebGLToCanvasSize = false;
+
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        container.className = "unity-mobile";
+        // Avoid draining fillrate performance on mobile devices,
+        // and default/override low DPI mode on mobile browsers.
+        config.devicePixelRatio = 1;
+        //unityShowBanner('WebGL builds are not supported on mobile devices.');
+      } else {
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+      }
+      loadingBar.style.display = "block";
+
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+          loadingBar.style.display = "none";
+          //fullscreenButton.onclick = () => {
+          //  unityInstance.SetFullscreen(1);
+          //};
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
+    </script>
+  </body>
 </html>
